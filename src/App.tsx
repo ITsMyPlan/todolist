@@ -1,11 +1,5 @@
-
 const App = (): JSX.Element => {
-
-  return (
-    <>
-      init project setting
-    </>
-  )
-}
+    return <>init project setting</>;
+};
 
 export default App;
