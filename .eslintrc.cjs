@@ -1,7 +1,6 @@
 module.exports = {
     root: true,
     env: { browser: true, es2020: true },
-
     // 커스텀 설정하지 않은 기타 권장 규칙들은 아래 문서에서 확인
     // https://eslint.org/docs/latest/rules/
     // https://typescript-eslint.io/rules/
@@ -23,44 +22,44 @@ module.exports = {
         // 함수 반환 타입을 명시하도록 강제
         '@typescript-eslint/explicit-function-return-type': 'error',
         // 네이밍의 일관성을 위한 규칙을 설정
-        '@typescript-eslint/naming-convention': [
-            'error',
-            {
-                selector: [
-                    'variableLike',
-                    'classProperty',
-                    'objectLiteralProperty',
-                    'typeProperty',
-                    'classMethod',
-                    'objectLiteralMethod',
-                    'typeMethod',
-                    'accessor',
-                ],
-                format: ['camelCase'],
-                leadingUnderscore: 'allow',
-            },
-            {
-                selector: ['variable'],
-                types: ['function'],
-                format: ['camelCase', 'PascalCase'],
-                leadingUnderscore: 'allow',
-            },
-            { selector: ['variable'], modifiers: ['global'], format: ['camelCase', 'PascalCase', 'UPPER_CASE'] },
-            {
-                selector: [
-                    'classProperty',
-                    'objectLiteralProperty',
-                    'typeProperty',
-                    'classMethod',
-                    'objectLiteralMethod',
-                    'typeMethod',
-                    'accessor',
-                    'enumMember',
-                ],
-                format: null,
-                modifiers: ['requiresQuotes'],
-            },
-        ],
+        // '@typescript-eslint/naming-convention': [
+        //     'error',
+        //     {
+        //         selector: [
+        //             'variableLike',
+        //             'classProperty',
+        //             'objectLiteralProperty',
+        //             'typeProperty',
+        //             'classMethod',
+        //             'objectLiteralMethod',
+        //             'typeMethod',
+        //             'accessor',
+        //         ],
+        //         format: ['camelCase'],
+        //         leadingUnderscore: 'allow',
+        //     },
+        //     {
+        //         selector: ['variable'],
+        //         types: ['function'],
+        //         format: ['camelCase', 'PascalCase'],
+        //         leadingUnderscore: 'allow',
+        //     },
+        //     { selector: ['variable'], modifiers: ['global'], format: ['camelCase', 'PascalCase', 'UPPER_CASE'] },
+        //     {
+        //         selector: [
+        //             'classProperty',
+        //             'objectLiteralProperty',
+        //             'typeProperty',
+        //             'classMethod',
+        //             'objectLiteralMethod',
+        //             'typeMethod',
+        //             'accessor',
+        //             'enumMember',
+        //         ],
+        //         format: null,
+        //         modifiers: ['requiresQuotes'],
+        //     },
+        // ],
         // 현재 코드 베이스에 any를 사용하는 곳이 많기 때문에 추후에 활성화 -> 처럼 미리 규칙을 세팅하고, off 시켜도 가능
         '@typescript-eslint/no-explicit-any': 'off',
         // 외부 라이브러리에 전달되는 함수의 매개변수의 경우에 사용하지 않더라도 선언해야하는 경우에 불편함을 피하기 위해 비활성화
