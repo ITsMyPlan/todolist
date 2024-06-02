@@ -1,5 +1,16 @@
+import { desktopBackground } from './config/background';
+
 const App = (): JSX.Element => {
-    return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+    const dark = false; // TODO:: 다크모드
+
+    return (
+        <div
+            className="h-screen w-screen"
+            style={{
+                backgroundImage: `url(${dark ? desktopBackground.dark : desktopBackground.light})`,
+            }}
+        ></div>
+    );
 };
 
 export default App;
