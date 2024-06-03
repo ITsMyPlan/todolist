@@ -2,8 +2,10 @@ interface IDesktopBackground {
     light: string;
     dark: string;
 }
+import desktopLight from '../assets/desktop/desktopLight.png';
+import desktopDark from '../assets/desktop/desktopDark.png';
 
 export const desktopBackground: IDesktopBackground = {
-    light: 'src/assets/desktop/desktopLight.png',
-    dark: 'src/assets/desktop/desktopDark.png',
+    light: desktopLight,
+    dark: desktopDark,
 };
