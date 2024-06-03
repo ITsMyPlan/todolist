@@ -5,7 +5,7 @@ const App = (): JSX.Element => {
 
     return (
         <div
-            className="h-screen w-screen"
+            className="bg-cover h-screen w-screen"
             style={{
                 backgroundImage: `url(${dark ? desktopBackground.dark : desktopBackground.light})`,
             }}
