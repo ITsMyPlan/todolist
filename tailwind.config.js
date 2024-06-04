@@ -5,6 +5,7 @@ export default {
     theme: {
         fontFamily: {
             apple: ['Apple SD Gothic Neo'],
+            appleBold: ['Apple SD Gothic Neo Bold'],
             pretendard: ['Pretendard-Regular'],
         },
         extend: {

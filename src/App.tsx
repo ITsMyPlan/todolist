@@ -35,6 +35,7 @@ const App = (): JSX.Element => {
         <div className="bg-light dark:bg-dark bg-cover h-screen w-screen">
             <button onClick={darkSetButton}>{dark ? 'Dark Mode' : 'Light Mode'}</button>
             <div className="font-apple">Test Apple SD Gothic Neo</div>
+            <div className="font-appleBold">Test Apple SD Gothic Neo Bold</div>
             <div className="font-pretendard">Test Pretendard-Regular</div>
         </div>
     );
