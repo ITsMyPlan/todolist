@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'Apple SD Gothic Neo';
+        font-weight: 400;
+        font-style: normal;
+        src:
+            local('Apple SD Gothic Neo Regular'),
+            url('https://cdn.jsdelivr.net/npm/font-applesdgothicneo@1.0/fonts/500_AppleSDGothicNeo-Regular.woff2')
+                format('woff2'),
+            url('https://cdn.jsdelivr.net/npm/font-applesdgothicneo@1.0/fonts/500_AppleSDGothicNeo-Regular.otf')
+                format('opentype');
+    }
+
+    @font-face {
+        font-display: swap; /* auto, block, fallback, optional */
+        font-family: 'Apple SD Gothic Neo Bold';
+        src: url('https://db.onlinewebfonts.com/t/67680f2eb947c5cbd58b40961b4a61e9.eot');
+        src:
+            url('https://db.onlinewebfonts.com/t/67680f2eb947c5cbd58b40961b4a61e9.eot?#iefix')
+                format('embedded-opentype'),
+            url('https://db.onlinewebfonts.com/t/67680f2eb947c5cbd58b40961b4a61e9.woff2') format('woff2'),
+            url('https://db.onlinewebfonts.com/t/67680f2eb947c5cbd58b40961b4a61e9.woff') format('woff'),
+            url('https://db.onlinewebfonts.com/t/67680f2eb947c5cbd58b40961b4a61e9.ttf') format('truetype'),
+            url('https://db.onlinewebfonts.com/t/67680f2eb947c5cbd58b40961b4a61e9.svg#Apple SD Gothic Neo Bold')
+                format('svg');
+    }
+
+    @font-face {
+        font-family: 'Pretendard-Regular';
+        font-weight: 400;
+        font-style: normal;
+        src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    }
+}
