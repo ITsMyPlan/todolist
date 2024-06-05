@@ -16,6 +16,7 @@
     }
 
     @font-face {
+        font-display: swap; /* auto, block, fallback, optional */
         font-family: 'Apple SD Gothic Neo Bold';
         src: url('https://db.onlinewebfonts.com/t/67680f2eb947c5cbd58b40961b4a61e9.eot');
         src:
