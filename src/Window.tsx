@@ -25,6 +25,7 @@ const Window = (): JSX.Element => {
     const initialWindowPositionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
     const handleDragStart = (e: React.MouseEvent<HTMLDivElement>): void => {
+        e.preventDefault();
         if (windowRef.current) {
             const windowRect = windowRef.current.getBoundingClientRect();
             initialWindowPositionRef.current = { x: e.clientX - windowRect.left, y: e.clientY - windowRect.top };
