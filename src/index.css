@@ -35,4 +35,34 @@
         font-style: normal;
         src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     }
+
+    @keyframes minimize {
+        0% {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(0.5) translateY(100vh);
+            opacity: 0;
+        }
+    }
+
+    @keyframes maximize {
+        0% {
+            transform: scale(0.5) translateY(100vh);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .minimize-animation {
+        animation: minimize 0.5s forwards;
+    }
+
+    .maximize-animation {
+        animation: maximize 0.5s forwards;
+    }
 }

@@ -1,13 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useWindowSize } from './hooks/useWindowSize';
 
-const WindowHeader = (): JSX.Element => {
+interface WindowHeaderProps {
+    onClose: () => void;
+    onMinimize: () => void;
+    onMaximize: () => void;
+}
+
+const WindowHeader = (props: WindowHeaderProps): JSX.Element => {
+    const { onClose, onMinimize, onMaximize } = props;
+
     return (
         <div className="flex items-center justify-between bg-gray-200 bg-opacity-70 p-2">
             <div className="flex space-x-2">
-                <button className="w-3 h-3 bg-red-500 rounded-full"></button>
-                <button className="w-3 h-3 bg-yellow-500 rounded-full"></button>
-                <button className="w-3 h-3 bg-green-500 rounded-full"></button>
+                <button className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-700" onClick={onClose}></button>
+                <button className="w-3 h-3 bg-yellow-500 rounded-full" onClick={onMinimize}></button>
+                <button className="w-3 h-3 bg-green-500 rounded-full" onClick={onMaximize}></button>
             </div>
             <div className="text-center flex-1">
                 <span className="text-sm text-gray-700">Apple Window</span>
@@ -17,8 +25,13 @@ const WindowHeader = (): JSX.Element => {
     );
 };
 
-const Window = (): JSX.Element => {
+const Window = (): JSX.Element | null => {
     const windowRef = useRef<HTMLDivElement>(null);
+    const [isClosed, setIsClosed] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(false);
+    const [isMaximized, setIsMaximized] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
+
     const { height: windowHeight } = useWindowSize();
     const [dragging, setDragging] = useState<boolean>(false);
     const [position, setPosition] = useState<{ left: number; top: number }>({ left: 100, top: 100 });
@@ -26,7 +39,7 @@ const Window = (): JSX.Element => {
 
     const handleDragStart = (e: React.MouseEvent<HTMLDivElement>): void => {
         e.preventDefault();
-        if (windowRef.current) {
+        if (windowRef.current && !isMaximized) {
             const windowRect = windowRef.current.getBoundingClientRect();
             initialWindowPositionRef.current = { x: e.clientX - windowRect.left, y: e.clientY - windowRect.top };
         }
@@ -39,7 +52,6 @@ const Window = (): JSX.Element => {
                 const newLeft = e.clientX - initialWindowPositionRef.current.x;
                 const newTop = e.clientY - initialWindowPositionRef.current.y;
 
-                // 화면 밖을 벗어나지 않도록 지정
                 const boundedTop = Math.max(0, Math.min(newTop, windowHeight - 20));
                 setPosition({ left: newLeft, top: boundedTop });
             }
@@ -62,18 +74,42 @@ const Window = (): JSX.Element => {
         };
     }, [dragging, windowHeight]);
 
+    const handleClose = (): void => setIsClosed(true);
+    const handleMinimize = (): void => {
+        setIsAnimating(true);
+        setTimeout(() => {
+            setIsMinimized(true);
+            setIsAnimating(false);
+        }, 500);
+    };
+    const handleMaximize = (): void => {
+        setIsMaximized(!isMaximized);
+    };
+
+    if (isClosed) {
+        return null;
+    }
+
     return (
-        <div
-            ref={windowRef}
-            className="flex flex-col w-full h-full max-w-[640px] max-h-[640px] border border-gray-300 rounded-lg overflow-hidden shadow-lg"
-            onMouseDown={handleDragStart}
-            style={{ position: 'fixed', left: position.left, top: position.top }}
-        >
-            <WindowHeader />
-            <div className="flex-grow bg-white p-4">
-                <p>Window content goes here...</p>
-            </div>
-        </div>
+        <>
+            {!isMinimized && (
+                <div
+                    ref={windowRef}
+                    className={`flex flex-col ${isMaximized ? 'w-full h-full' : 'w-96 h-64'} border border-gray-300 rounded-lg overflow-hidden shadow-lg ${isAnimating ? 'minimize-animation' : ''}`}
+                    onMouseDown={handleDragStart}
+                    style={{
+                        position: 'fixed',
+                        left: isMaximized ? 0 : position.left,
+                        top: isMaximized ? 0 : position.top,
+                    }}
+                >
+                    <WindowHeader onClose={handleClose} onMinimize={handleMinimize} onMaximize={handleMaximize} />
+                    <div className="flex-grow bg-white p-4">
+                        <p>This is the window content.</p>
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 
