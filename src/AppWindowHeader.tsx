@@ -1,4 +1,3 @@
-import React from 'react';
 import { registerDragEvent } from './utils/registerDragEvent';
 
 const CloseIcon = (): JSX.Element => (
@@ -40,23 +39,6 @@ const MaximizeIcon = (): JSX.Element => (
     </svg>
 );
 
-const WindowButton = ({
-    color,
-    onClick,
-    children,
-}: {
-    color: string;
-    onClick: () => void;
-    children: React.ReactNode;
-}): JSX.Element => (
-    <button
-        className={`relative w-3 h-3 rounded-full bg-${color}-500 group flex items-center justify-center`}
-        onClick={onClick}
-    >
-        {children}
-    </button>
-);
-
 interface AppWindowHeaderProps {
     appRect: { x: number; y: number; w: number; h: number };
     onSetAppRect: (DOMRect: { x: number; y: number; w: number; h: number }) => void;
@@ -82,15 +64,24 @@ const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
             })}
         >
             <div className="flex space-x-2">
-                <WindowButton color="red" onClick={onClose}>
+                <button
+                    className={`relative w-3 h-3 rounded-full bg-red-500 group flex items-center justify-center`}
+                    onClick={onClose}
+                >
                     <CloseIcon />
-                </WindowButton>
-                <WindowButton color="yellow" onClick={onMinimize}>
+                </button>
+                <button
+                    className={`relative w-3 h-3 rounded-full bg-yellow-500 group flex items-center justify-center`}
+                    onClick={onMinimize}
+                >
                     <MinimizeIcon />
-                </WindowButton>
-                <WindowButton color="green" onClick={onMaximize}>
+                </button>
+                <button
+                    className={`relative w-3 h-3 rounded-full bg-green-500 group flex items-center justify-center`}
+                    onClick={onMaximize}
+                >
                     <MaximizeIcon />
-                </WindowButton>
+                </button>
             </div>
             <div className="text-center flex-1">
                 <span className="text-sm text-gray-700">Apple Window</span>
