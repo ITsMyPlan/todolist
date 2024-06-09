@@ -13,7 +13,7 @@ const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
     const { onClose, onMinimize, onMaximize } = props;
 
     return (
-        <div className="flex items-center justify-between bg-gray-200 bg-opacity-70 p-2">
+        <div className="flex items-center justify-between bg-gray-200 bg-opacity-70 p-2" onDoubleClick={onMaximize}>
             <div className="flex space-x-2">
                 <button className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-700" onClick={onClose}></button>
                 <button className="w-3 h-3 bg-yellow-500 rounded-full" onClick={onMinimize}></button>
