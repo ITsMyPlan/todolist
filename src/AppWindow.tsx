@@ -22,6 +22,9 @@ const AppWindow = (): JSX.Element | null => {
     };
 
     const handleMinimize = (): void => {
+        if (isMaximized) {
+            return;
+        }
         setIsAnimating(true);
         setTimeout(() => {
             setIsMinimized(true);
@@ -42,7 +45,7 @@ const AppWindow = (): JSX.Element | null => {
             {!isMinimized && (
                 <div
                     ref={appWindowRef}
-                    className={`flex flex-col border border-gray-300 rounded-lg overflow-hidden shadow-lg ${isAnimating ? 'minimize-animation' : ''}`}
+                    className={`flex flex-col border border-gray-300 rounded-lg overflow-hidden shadow-lg shadow-black/30 ${isAnimating ? 'minimize-animation' : ''}`}
                     style={{
                         position: 'fixed',
                         width: isMaximized ? windowWidth : w,
@@ -148,6 +151,7 @@ const AppWindow = (): JSX.Element | null => {
                         }, true)}
                     />
                     <AppWindowHeader
+                        isMaximized={isMaximized}
                         appRect={{ x, y, w, h }}
                         onSetAppRect={setAppRect}
                         onClose={handleClose}

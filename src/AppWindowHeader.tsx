@@ -40,6 +40,7 @@ const MaximizeIcon = (): JSX.Element => (
 );
 
 interface AppWindowHeaderProps {
+    isMaximized: boolean;
     appRect: { x: number; y: number; w: number; h: number };
     onSetAppRect: (DOMRect: { x: number; y: number; w: number; h: number }) => void;
     onClose: () => void;
@@ -48,7 +49,7 @@ interface AppWindowHeaderProps {
 }
 
 const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
-    const { appRect, onSetAppRect, onClose, onMinimize, onMaximize } = props;
+    const { isMaximized, appRect, onSetAppRect, onClose, onMinimize, onMaximize } = props;
 
     return (
         <div
@@ -71,10 +72,11 @@ const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
                     <CloseIcon />
                 </button>
                 <button
-                    className={`relative w-3 h-3 rounded-full bg-yellow-500 group flex items-center justify-center`}
+                    className={`relative w-3 h-3 rounded-full ${isMaximized ? 'bg-gray-500' : 'bg-yellow-500'} group flex items-center justify-center`}
                     onClick={onMinimize}
+                    onDoubleClick={(e) => e.stopPropagation()}
                 >
-                    <MinimizeIcon />
+                    {!isMaximized && <MinimizeIcon />}
                 </button>
                 <button
                     className={`relative w-3 h-3 rounded-full bg-green-500 group flex items-center justify-center`}
