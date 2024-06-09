@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useWindowSize } from './hooks/useWindowSize';
+import { inrange } from './utils';
 import { registerDragEvent } from './utils/registerDragEvent';
 
 interface AppWindowHeaderProps {
@@ -26,10 +27,13 @@ const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
     );
 };
 
+const MIN_WIDTH = 500;
+const MIN_HEIGHT = 400;
+
 const AppWindow = (): JSX.Element | null => {
     const appWindowRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth, height: windowHeight } = useWindowSize();
-    const [{ x, y, w, h }, setConfig] = useState({ x: 100, y: 100, w: 96 * 4, h: 64 * 4 });
+    const [{ x, y, w, h }, setConfig] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
 
     const [isClosed, setIsClosed] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
@@ -78,6 +82,102 @@ const AppWindow = (): JSX.Element | null => {
                         });
                     })}
                 >
+                    {/* 좌상단 */}
+                    <div
+                        className="absolute -top-1 -left-1 h-4 w-4 cursor-nw-resize"
+                        {...registerDragEvent((deltaX, deltaY) => {
+                            setConfig({
+                                x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
+                                y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
+                                w: inrange(w - deltaX, MIN_WIDTH, x + w),
+                                h: inrange(h - deltaY, MIN_HEIGHT, y + h),
+                            });
+                        }, true)}
+                    />
+                    {/* 우상단 */}
+                    <div
+                        className="absolute -top-1 -right-1 h-4 w-4 cursor-ne-resize"
+                        {...registerDragEvent((deltaX, deltaY) => {
+                            setConfig({
+                                x,
+                                y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
+                                w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
+                                h: inrange(h - deltaY, MIN_HEIGHT, y + h),
+                            });
+                        }, true)}
+                    />
+                    {/* 좌하단 */}
+                    <div
+                        className="absolute -bottom-1 -left-1 h-4 w-4 cursor-sw-resize"
+                        {...registerDragEvent((deltaX, deltaY) => {
+                            setConfig({
+                                x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
+                                y,
+                                w: inrange(w - deltaX, MIN_WIDTH, x + w),
+                                h: inrange(h + deltaY, MIN_HEIGHT, windowHeight - y),
+                            });
+                        }, true)}
+                    />
+                    {/* 우하단 */}
+                    <div
+                        className="absolute -bottom-1 -right-1 h-4 w-4 cursor-se-resize"
+                        {...registerDragEvent((deltaX, deltaY) => {
+                            setConfig({
+                                x,
+                                y,
+                                w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
+                                h: inrange(h + deltaY, MIN_HEIGHT, windowHeight - y),
+                            });
+                        }, true)}
+                    />
+                    {/* 상 */}
+                    <div
+                        className="absolute -top-0.5 left-3 right-3 h-2 cursor-n-resize"
+                        {...registerDragEvent((_, deltaY) => {
+                            setConfig({
+                                x,
+                                y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
+                                w,
+                                h: inrange(h - deltaY, MIN_HEIGHT, y + h),
+                            });
+                        }, true)}
+                    />
+                    {/* 하 */}
+                    <div
+                        className="absolute -bottom-0.5 left-3 right-3 h-2 cursor-w-resize"
+                        {...registerDragEvent((_, deltaY) => {
+                            setConfig({
+                                x,
+                                y,
+                                w,
+                                h: inrange(h + deltaY, MIN_HEIGHT, windowHeight - y),
+                            });
+                        }, true)}
+                    />
+                    {/* 좌 */}
+                    <div
+                        className="absolute bottom-3 top-3 -left-0.5 w-2 cursor-w-resize"
+                        {...registerDragEvent((deltaX, _) => {
+                            setConfig({
+                                x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
+                                y,
+                                w: inrange(w - deltaX, MIN_WIDTH, x + w),
+                                h,
+                            });
+                        }, true)}
+                    />
+                    {/* 우 */}
+                    <div
+                        className="absolute bottom-3 top-3 -right-0.5 w-2 cursor-e-resize"
+                        {...registerDragEvent((deltaX, _) => {
+                            setConfig({
+                                x,
+                                y,
+                                w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
+                                h,
+                            });
+                        }, true)}
+                    />
                     <AppWindowHeader onClose={handleClose} onMinimize={handleMinimize} onMaximize={handleMaximize} />
                     <div className="flex-grow bg-white p-4">
                         <p>This is the window content.</p>
