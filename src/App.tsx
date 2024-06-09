@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import AppWindow from './AppWindow';
 import { safeLocalStorage } from './utils/storage';
-import Window from './Window';
 
 const App = (): JSX.Element => {
     const localStorageChecker = (): boolean => {
@@ -36,7 +36,7 @@ const App = (): JSX.Element => {
         <div className="bg-light dark:bg-dark bg-cover h-screen w-screen">
             <button onClick={darkSetButton}>{dark ? 'Dark Mode' : 'Light Mode'}</button>
 
-            <Window />
+            <AppWindow />
         </div>
     );
 };
