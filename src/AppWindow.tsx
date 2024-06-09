@@ -1,31 +1,8 @@
 import { useRef, useState } from 'react';
+import AppWindowHeader from './AppWindowHeader';
 import { useWindowSize } from './hooks/useWindowSize';
 import { inrange } from './utils';
 import { registerDragEvent } from './utils/registerDragEvent';
-
-interface AppWindowHeaderProps {
-    onClose: () => void;
-    onMinimize: () => void;
-    onMaximize: () => void;
-}
-
-const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
-    const { onClose, onMinimize, onMaximize } = props;
-
-    return (
-        <div className="flex items-center justify-between bg-gray-200 bg-opacity-70 p-2" onDoubleClick={onMaximize}>
-            <div className="flex space-x-2">
-                <button className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-700" onClick={onClose}></button>
-                <button className="w-3 h-3 bg-yellow-500 rounded-full" onClick={onMinimize}></button>
-                <button className="w-3 h-3 bg-green-500 rounded-full" onClick={onMaximize}></button>
-            </div>
-            <div className="text-center flex-1">
-                <span className="text-sm text-gray-700">Apple Window</span>
-            </div>
-            <div className="w-12"></div>
-        </div>
-    );
-};
 
 const MIN_WIDTH = 500;
 const MIN_HEIGHT = 400;
@@ -33,7 +10,7 @@ const MIN_HEIGHT = 400;
 const AppWindow = (): JSX.Element | null => {
     const appWindowRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth, height: windowHeight } = useWindowSize();
-    const [{ x, y, w, h }, setConfig] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
+    const [{ x, y, w, h }, setAppRect] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
 
     const [isClosed, setIsClosed] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
@@ -73,20 +50,12 @@ const AppWindow = (): JSX.Element | null => {
                         left: isMaximized ? 0 : x,
                         top: isMaximized ? 0 : y,
                     }}
-                    {...registerDragEvent((deltaX, deltaY) => {
-                        setConfig({
-                            x: x + deltaX,
-                            y: Math.max(0, y + deltaY),
-                            w,
-                            h,
-                        });
-                    })}
                 >
                     {/* 좌상단 */}
                     <div
                         className="absolute -top-1 -left-1 h-4 w-4 cursor-nw-resize"
                         {...registerDragEvent((deltaX, deltaY) => {
-                            setConfig({
+                            setAppRect({
                                 x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
                                 y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
                                 w: inrange(w - deltaX, MIN_WIDTH, x + w),
@@ -98,7 +67,7 @@ const AppWindow = (): JSX.Element | null => {
                     <div
                         className="absolute -top-1 -right-1 h-4 w-4 cursor-ne-resize"
                         {...registerDragEvent((deltaX, deltaY) => {
-                            setConfig({
+                            setAppRect({
                                 x,
                                 y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
                                 w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
@@ -110,7 +79,7 @@ const AppWindow = (): JSX.Element | null => {
                     <div
                         className="absolute -bottom-1 -left-1 h-4 w-4 cursor-sw-resize"
                         {...registerDragEvent((deltaX, deltaY) => {
-                            setConfig({
+                            setAppRect({
                                 x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
                                 y,
                                 w: inrange(w - deltaX, MIN_WIDTH, x + w),
@@ -122,7 +91,7 @@ const AppWindow = (): JSX.Element | null => {
                     <div
                         className="absolute -bottom-1 -right-1 h-4 w-4 cursor-se-resize"
                         {...registerDragEvent((deltaX, deltaY) => {
-                            setConfig({
+                            setAppRect({
                                 x,
                                 y,
                                 w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
@@ -134,7 +103,7 @@ const AppWindow = (): JSX.Element | null => {
                     <div
                         className="absolute -top-0.5 left-3 right-3 h-2 cursor-n-resize"
                         {...registerDragEvent((_, deltaY) => {
-                            setConfig({
+                            setAppRect({
                                 x,
                                 y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
                                 w,
@@ -146,7 +115,7 @@ const AppWindow = (): JSX.Element | null => {
                     <div
                         className="absolute -bottom-0.5 left-3 right-3 h-2 cursor-s-resize"
                         {...registerDragEvent((_, deltaY) => {
-                            setConfig({
+                            setAppRect({
                                 x,
                                 y,
                                 w,
@@ -158,7 +127,7 @@ const AppWindow = (): JSX.Element | null => {
                     <div
                         className="absolute bottom-3 top-3 -left-0.5 w-2 cursor-w-resize"
                         {...registerDragEvent((deltaX, _) => {
-                            setConfig({
+                            setAppRect({
                                 x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
                                 y,
                                 w: inrange(w - deltaX, MIN_WIDTH, x + w),
@@ -170,7 +139,7 @@ const AppWindow = (): JSX.Element | null => {
                     <div
                         className="absolute bottom-3 top-3 -right-0.5 w-2 cursor-e-resize"
                         {...registerDragEvent((deltaX, _) => {
-                            setConfig({
+                            setAppRect({
                                 x,
                                 y,
                                 w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
@@ -178,7 +147,13 @@ const AppWindow = (): JSX.Element | null => {
                             });
                         }, true)}
                     />
-                    <AppWindowHeader onClose={handleClose} onMinimize={handleMinimize} onMaximize={handleMaximize} />
+                    <AppWindowHeader
+                        appRect={{ x, y, w, h }}
+                        onSetAppRect={setAppRect}
+                        onClose={handleClose}
+                        onMinimize={handleMinimize}
+                        onMaximize={handleMaximize}
+                    />
                     <div className="flex-grow bg-white p-4">
                         <p>This is the window content.</p>
                     </div>
