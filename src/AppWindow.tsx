@@ -144,7 +144,7 @@ const AppWindow = (): JSX.Element | null => {
                     />
                     {/* 하 */}
                     <div
-                        className="absolute -bottom-0.5 left-3 right-3 h-2 cursor-w-resize"
+                        className="absolute -bottom-0.5 left-3 right-3 h-2 cursor-s-resize"
                         {...registerDragEvent((_, deltaY) => {
                             setConfig({
                                 x,
