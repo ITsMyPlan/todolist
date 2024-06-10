@@ -52,6 +52,8 @@ const AppWindow = (): JSX.Element | null => {
                         x: isMaximized ? 0 : x,
                         y: isMaximized ? 0 : y,
                     }}
+                    minWidth={MIN_WIDTH}
+                    minHeight={MIN_HEIGHT}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
                     updateRnDRect={setAppRect}

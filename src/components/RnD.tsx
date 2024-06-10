@@ -1,6 +1,5 @@
 import type { Ref } from 'react';
 import { forwardRef } from 'react';
-import { MIN_HEIGHT, MIN_WIDTH } from '../AppWindow';
 import { inrange } from '../utils';
 import { registerDragEvent } from '../utils/registerDragEvent';
 
@@ -9,13 +8,16 @@ interface RnDProps {
     position: { x: number; y: number };
     children?: React.ReactNode;
     className?: string;
+    minWidth: number;
+    minHeight: number;
     windowWidth: number;
     windowHeight: number;
     updateRnDRect: (RnDRect: { x: number; y: number; w: number; h: number }) => void;
 }
 
 const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element => {
-    const { size, position, children, className, updateRnDRect, windowWidth, windowHeight } = props;
+    const { size, position, children, className, minWidth, minHeight, windowWidth, windowHeight, updateRnDRect } =
+        props;
     const { width: w, height: h } = size;
     const { x, y } = position;
 
@@ -26,10 +28,10 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
                 className="absolute -top-1 -left-1 h-4 w-4 cursor-nw-resize"
                 {...registerDragEvent((deltaX, deltaY) => {
                     updateRnDRect({
-                        x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
-                        y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
-                        w: inrange(w - deltaX, MIN_WIDTH, x + w),
-                        h: inrange(h - deltaY, MIN_HEIGHT, y + h),
+                        x: inrange(x + deltaX, 0, x + w - minWidth),
+                        y: inrange(y + deltaY, 0, y + h - minHeight),
+                        w: inrange(w - deltaX, minWidth, x + w),
+                        h: inrange(h - deltaY, minHeight, y + h),
                     });
                 }, true)}
             />
@@ -39,9 +41,9 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
                 {...registerDragEvent((deltaX, deltaY) => {
                     updateRnDRect({
                         x,
-                        y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
-                        w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
-                        h: inrange(h - deltaY, MIN_HEIGHT, y + h),
+                        y: inrange(y + deltaY, 0, y + h - minHeight),
+                        w: inrange(w + deltaX, minWidth, windowWidth - x),
+                        h: inrange(h - deltaY, minHeight, y + h),
                     });
                 }, true)}
             />
@@ -50,10 +52,10 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
                 className="absolute -bottom-1 -left-1 h-4 w-4 cursor-sw-resize"
                 {...registerDragEvent((deltaX, deltaY) => {
                     updateRnDRect({
-                        x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
+                        x: inrange(x + deltaX, 0, x + w - minWidth),
                         y,
-                        w: inrange(w - deltaX, MIN_WIDTH, x + w),
-                        h: inrange(h + deltaY, MIN_HEIGHT, windowHeight - y),
+                        w: inrange(w - deltaX, minWidth, x + w),
+                        h: inrange(h + deltaY, minHeight, windowHeight - y),
                     });
                 }, true)}
             />
@@ -64,8 +66,8 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
                     updateRnDRect({
                         x,
                         y,
-                        w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
-                        h: inrange(h + deltaY, MIN_HEIGHT, windowHeight - y),
+                        w: inrange(w + deltaX, minWidth, windowWidth - x),
+                        h: inrange(h + deltaY, minHeight, windowHeight - y),
                     });
                 }, true)}
             />
@@ -75,9 +77,9 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
                 {...registerDragEvent((_, deltaY) => {
                     updateRnDRect({
                         x,
-                        y: inrange(y + deltaY, 0, y + h - MIN_HEIGHT),
+                        y: inrange(y + deltaY, 0, y + h - minHeight),
                         w,
-                        h: inrange(h - deltaY, MIN_HEIGHT, y + h),
+                        h: inrange(h - deltaY, minHeight, y + h),
                     });
                 }, true)}
             />
@@ -89,7 +91,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
                         x,
                         y,
                         w,
-                        h: inrange(h + deltaY, MIN_HEIGHT, windowHeight - y),
+                        h: inrange(h + deltaY, minHeight, windowHeight - y),
                     });
                 }, true)}
             />
@@ -98,9 +100,9 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
                 className="absolute bottom-3 top-3 -left-0.5 w-2 cursor-w-resize"
                 {...registerDragEvent((deltaX, _) => {
                     updateRnDRect({
-                        x: inrange(x + deltaX, 0, x + w - MIN_WIDTH),
+                        x: inrange(x + deltaX, 0, x + w - minWidth),
                         y,
-                        w: inrange(w - deltaX, MIN_WIDTH, x + w),
+                        w: inrange(w - deltaX, minWidth, x + w),
                         h,
                     });
                 }, true)}
@@ -112,7 +114,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
                     updateRnDRect({
                         x,
                         y,
-                        w: inrange(w + deltaX, MIN_WIDTH, windowWidth - x),
+                        w: inrange(w + deltaX, minWidth, windowWidth - x),
                         h,
                     });
                 }, true)}
