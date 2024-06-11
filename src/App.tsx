@@ -32,11 +32,20 @@ const App = (): JSX.Element => {
         }
     }, [dark]);
 
+    /**
+     * TODO:
+     * 선택한 AppWindow가 가장 최상단에 위치하도록
+     * 하나의 AppWindow만 Maximize 가능하도록
+     */
     return (
         <div className="bg-light dark:bg-dark bg-cover h-screen w-screen">
             <button onClick={darkSetButton}>{dark ? 'Dark Mode' : 'Light Mode'}</button>
-
-            <AppWindow />
+            <AppWindow>
+                <p>Window 1</p>
+            </AppWindow>
+            <AppWindow>
+                <p>Window 2</p>
+            </AppWindow>
         </div>
     );
 };

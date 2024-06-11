@@ -6,7 +6,11 @@ import { useWindowSize } from './hooks/useWindowSize';
 export const MIN_WIDTH = 500;
 export const MIN_HEIGHT = 400;
 
-const AppWindow = (): JSX.Element | null => {
+interface AppWindowProps {
+    children: React.ReactNode;
+}
+
+const AppWindow = (props: AppWindowProps): JSX.Element | null => {
     const appWindowRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth, height: windowHeight } = useWindowSize();
     const [{ x, y, w, h }, setAppRect] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
@@ -67,9 +71,7 @@ const AppWindow = (): JSX.Element | null => {
                         onMinimize={handleMinimize}
                         onMaximize={handleMaximize}
                     />
-                    <div className="main-content flex-grow bg-white p-4">
-                        <p>This is the window content.</p>
-                    </div>
+                    <div className="main-content flex-grow bg-white p-4">{props.children}</div>
                 </RnD>
             )}
         </>
