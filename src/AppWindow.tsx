@@ -6,7 +6,15 @@ import { useWindowSize } from './hooks/useWindowSize';
 export const MIN_WIDTH = 500;
 export const MIN_HEIGHT = 400;
 
-const AppWindow = (): JSX.Element | null => {
+interface AppWindowProps {
+    title: string;
+    zIndex: number;
+    onZindex: () => void;
+    children: React.ReactNode;
+}
+
+const AppWindow = (props: AppWindowProps): JSX.Element | null => {
+    const { title, zIndex, onZindex, children } = props;
     const appWindowRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth, height: windowHeight } = useWindowSize();
     const [{ x, y, w, h }, setAppRect] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
@@ -52,14 +60,17 @@ const AppWindow = (): JSX.Element | null => {
                         x: isMaximized ? 0 : x,
                         y: isMaximized ? 0 : y,
                     }}
+                    zIndex={zIndex}
                     minWidth={MIN_WIDTH}
                     minHeight={MIN_HEIGHT}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
                     updateRnDRect={setAppRect}
                     className={`flex flex-col border border-gray-300 rounded-lg overflow-hidden shadow-lg shadow-black/30 ${isAnimating ? 'minimize-animation' : ''}`}
+                    onZindex={onZindex}
                 >
                     <AppWindowHeader
+                        title={title}
                         isMaximized={isMaximized}
                         appRect={{ x, y, w, h }}
                         onSetAppRect={setAppRect}
@@ -67,9 +78,7 @@ const AppWindow = (): JSX.Element | null => {
                         onMinimize={handleMinimize}
                         onMaximize={handleMaximize}
                     />
-                    <div className="main-content flex-grow bg-white p-4">
-                        <p>This is the window content.</p>
-                    </div>
+                    <div className="main-content flex-grow bg-white p-4">{children}</div>
                 </RnD>
             )}
         </>

@@ -6,6 +6,7 @@ import { registerDragEvent } from '../utils/registerDragEvent';
 interface RnDProps {
     size: { width: number; height: number };
     position: { x: number; y: number };
+    zIndex: number;
     children?: React.ReactNode;
     className?: string;
     minWidth: number;
@@ -13,16 +14,33 @@ interface RnDProps {
     windowWidth: number;
     windowHeight: number;
     updateRnDRect: (RnDRect: { x: number; y: number; w: number; h: number }) => void;
+    onZindex: () => void;
 }
 
 const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element => {
-    const { size, position, children, className, minWidth, minHeight, windowWidth, windowHeight, updateRnDRect } =
-        props;
+    const {
+        size,
+        position,
+        zIndex,
+        children,
+        className,
+        minWidth,
+        minHeight,
+        windowWidth,
+        windowHeight,
+        updateRnDRect,
+        onZindex,
+    } = props;
     const { width: w, height: h } = size;
     const { x, y } = position;
 
     return (
-        <div ref={ref} style={{ position: 'fixed', width: w, height: h, left: x, top: y }} className={className}>
+        <div
+            ref={ref}
+            style={{ position: 'fixed', width: w, height: h, left: x, top: y, zIndex: zIndex }}
+            className={className}
+            onMouseDown={onZindex}
+        >
             {/* 좌상단 */}
             <div
                 className="absolute -top-1 -left-1 h-4 w-4 cursor-nw-resize"
