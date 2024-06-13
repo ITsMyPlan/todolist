@@ -7,10 +7,13 @@ export const MIN_WIDTH = 500;
 export const MIN_HEIGHT = 400;
 
 interface AppWindowProps {
+    zIndex: number;
+    onZindex: () => void;
     children: React.ReactNode;
 }
 
 const AppWindow = (props: AppWindowProps): JSX.Element | null => {
+    const { zIndex, onZindex, children } = props;
     const appWindowRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth, height: windowHeight } = useWindowSize();
     const [{ x, y, w, h }, setAppRect] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
@@ -56,12 +59,14 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                         x: isMaximized ? 0 : x,
                         y: isMaximized ? 0 : y,
                     }}
+                    zIndex={zIndex}
                     minWidth={MIN_WIDTH}
                     minHeight={MIN_HEIGHT}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
                     updateRnDRect={setAppRect}
                     className={`flex flex-col border border-gray-300 rounded-lg overflow-hidden shadow-lg shadow-black/30 ${isAnimating ? 'minimize-animation' : ''}`}
+                    onClick={onZindex}
                 >
                     <AppWindowHeader
                         isMaximized={isMaximized}
@@ -71,7 +76,7 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                         onMinimize={handleMinimize}
                         onMaximize={handleMaximize}
                     />
-                    <div className="main-content flex-grow bg-white p-4">{props.children}</div>
+                    <div className="main-content flex-grow bg-white p-4">{children}</div>
                 </RnD>
             )}
         </>
