@@ -40,6 +40,7 @@ const MaximizeIcon = (): JSX.Element => (
 );
 
 interface AppWindowHeaderProps {
+    title: string;
     isMaximized: boolean;
     appRect: { x: number; y: number; w: number; h: number };
     onSetAppRect: (DOMRect: { x: number; y: number; w: number; h: number }) => void;
@@ -49,7 +50,7 @@ interface AppWindowHeaderProps {
 }
 
 const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
-    const { isMaximized, appRect, onSetAppRect, onClose, onMinimize, onMaximize } = props;
+    const { title, isMaximized, appRect, onSetAppRect, onClose, onMinimize, onMaximize } = props;
 
     return (
         <div
@@ -86,7 +87,7 @@ const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
                 </button>
             </div>
             <div className="text-center flex-1">
-                <span className="text-sm text-gray-700">Apple Window</span>
+                <span className="text-sm text-gray-700">{title}</span>
             </div>
             <div className="w-12"></div>
         </div>

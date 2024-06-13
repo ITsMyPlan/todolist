@@ -14,7 +14,7 @@ interface RnDProps {
     windowWidth: number;
     windowHeight: number;
     updateRnDRect: (RnDRect: { x: number; y: number; w: number; h: number }) => void;
-    onClick: () => void;
+    onZindex: () => void;
 }
 
 const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element => {
@@ -29,7 +29,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
         windowWidth,
         windowHeight,
         updateRnDRect,
-        onClick,
+        onZindex,
     } = props;
     const { width: w, height: h } = size;
     const { x, y } = position;
@@ -39,7 +39,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
             ref={ref}
             style={{ position: 'fixed', width: w, height: h, left: x, top: y, zIndex: zIndex }}
             className={className}
-            onClick={onClick}
+            onMouseDown={onZindex}
         >
             {/* 좌상단 */}
             <div

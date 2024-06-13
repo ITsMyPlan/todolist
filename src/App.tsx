@@ -68,7 +68,7 @@ const App = (): JSX.Element => {
         <div className="bg-light dark:bg-dark bg-cover h-screen w-screen">
             <button onClick={darkSetButton}>{dark ? 'Dark Mode' : 'Light Mode'}</button>
             {apps.map((app) => (
-                <AppWindow key={app.id} zIndex={app.zIndex} onZindex={() => handleZIndex(app.id)}>
+                <AppWindow key={app.id} title={app.title} zIndex={app.zIndex} onZindex={() => handleZIndex(app.id)}>
                     <p>{app.title}</p>
                 </AppWindow>
             ))}
