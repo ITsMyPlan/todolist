@@ -9,12 +9,12 @@ export const MIN_HEIGHT = 400;
 interface AppWindowProps {
     title: string;
     zIndex: number;
-    onZindex: () => void;
+    onZIndex: () => void;
     children: React.ReactNode;
 }
 
 const AppWindow = (props: AppWindowProps): JSX.Element | null => {
-    const { title, zIndex, onZindex, children } = props;
+    const { title, zIndex, onZIndex, children } = props;
     const appWindowRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth, height: windowHeight } = useWindowSize();
     const [{ x, y, w, h }, setAppRect] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
@@ -67,7 +67,7 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                     windowHeight={windowHeight}
                     updateRnDRect={setAppRect}
                     className={`flex flex-col border border-gray-300 rounded-lg overflow-hidden shadow-lg shadow-black/30 ${isAnimating ? 'minimize-animation' : ''}`}
-                    onZindex={onZindex}
+                    onZIndex={onZIndex}
                 >
                     <AppWindowHeader
                         title={title}
