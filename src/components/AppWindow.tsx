@@ -16,7 +16,12 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
     const { app, onZIndex } = props;
     const appWindowRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth, height: windowHeight } = useWindowSize();
-    const [{ x, y, w, h }, setAppRect] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
+    const [{ x, y, w, h }, setAppRect] = useState({
+        x: app.left ?? 100,
+        y: app.top ?? 100,
+        w: app.width ?? MIN_WIDTH,
+        h: app.height ?? MIN_HEIGHT,
+    });
 
     const [isClosed, setIsClosed] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
@@ -77,7 +82,7 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                         onMinimize={handleMinimize}
                         onMaximize={handleMaximize}
                     />
-                    <div className="main-content flex-grow bg-white p-4">{app.content}</div>
+                    <div className="main-content flex-grow bg-white">{app.content}</div>
                 </RnD>
             )}
         </>
