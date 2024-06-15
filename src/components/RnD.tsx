@@ -43,7 +43,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
         >
             {/* 좌상단 */}
             <div
-                className="absolute -top-1 -left-1 h-4 w-4 cursor-nw-resize"
+                className="absolute -top-1 -left-1 h-4 w-4 cursor-nwse-resize"
                 {...registerDragEvent((deltaX, deltaY) => {
                     updateRnDRect({
                         x: inrange(x + deltaX, 0, x + w - minWidth),
@@ -55,7 +55,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
             />
             {/* 우상단 */}
             <div
-                className="absolute -top-1 -right-1 h-4 w-4 cursor-ne-resize"
+                className="absolute -top-1 -right-1 h-4 w-4 cursor-nesw-resize"
                 {...registerDragEvent((deltaX, deltaY) => {
                     updateRnDRect({
                         x,
@@ -67,7 +67,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
             />
             {/* 좌하단 */}
             <div
-                className="absolute -bottom-1 -left-1 h-4 w-4 cursor-sw-resize"
+                className="absolute -bottom-1 -left-1 h-4 w-4 cursor-nesw-resize"
                 {...registerDragEvent((deltaX, deltaY) => {
                     updateRnDRect({
                         x: inrange(x + deltaX, 0, x + w - minWidth),
@@ -79,7 +79,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
             />
             {/* 우하단 */}
             <div
-                className="absolute -bottom-1 -right-1 h-4 w-4 cursor-se-resize"
+                className="absolute -bottom-1 -right-1 h-4 w-4 cursor-nwse-resize"
                 {...registerDragEvent((deltaX, deltaY) => {
                     updateRnDRect({
                         x,
@@ -91,7 +91,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
             />
             {/* 상 */}
             <div
-                className="absolute -top-0.5 left-3 right-3 h-2 cursor-n-resize"
+                className="absolute -top-0.5 left-3 right-3 h-2 cursor-row-resize"
                 {...registerDragEvent((_, deltaY) => {
                     updateRnDRect({
                         x,
@@ -103,7 +103,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
             />
             {/* 하 */}
             <div
-                className="absolute -bottom-0.5 left-3 right-3 h-2 cursor-s-resize"
+                className="absolute -bottom-0.5 left-3 right-3 h-2 cursor-row-resize"
                 {...registerDragEvent((_, deltaY) => {
                     updateRnDRect({
                         x,
@@ -115,7 +115,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
             />
             {/* 좌 */}
             <div
-                className="absolute bottom-3 top-3 -left-0.5 w-2 cursor-w-resize"
+                className="absolute bottom-3 top-3 -left-0.5 w-2 cursor-col-resize"
                 {...registerDragEvent((deltaX, _) => {
                     updateRnDRect({
                         x: inrange(x + deltaX, 0, x + w - minWidth),
@@ -127,7 +127,7 @@ const RnD = forwardRef((props: RnDProps, ref: Ref<HTMLDivElement>): JSX.Element 
             />
             {/* 우 */}
             <div
-                className="absolute bottom-3 top-3 -right-0.5 w-2 cursor-e-resize"
+                className="absolute bottom-3 top-3 -right-0.5 w-2 cursor-col-resize"
                 {...registerDragEvent((deltaX, _) => {
                     updateRnDRect({
                         x,

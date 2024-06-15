@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import AppWindow from './components/AppWindow';
-import Memo from './pages/Memo';
+import Blog from './pages/Blog';
 import TodoList from './pages/TodoList';
 import { safeLocalStorage } from './utils/storage';
 import ApplicationManager from './window/ApplicationManager';
@@ -8,8 +8,8 @@ import ApplicationManager from './window/ApplicationManager';
 const App = (): JSX.Element => {
     const [applicationManager] = useState(() => {
         const manager = new ApplicationManager();
-        manager.addApplication('memo', <Memo />);
-        manager.addApplication('todolist', <TodoList />);
+        manager.addApplication('blog', <Blog />, { width: 500, height: 650, left: 70, top: 70 });
+        manager.addApplication('todolist', <TodoList />, { width: 700, height: 600, left: 350, top: 150 });
         return manager;
     });
     const [applications, setApplications] = useState(applicationManager.getApplications());
