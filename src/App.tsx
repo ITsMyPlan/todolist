@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import AppWindow from './AppWindow';
+import AppWindow from './components/AppWindow';
+import Memo from './pages/Memo';
+import TodoList from './pages/TodoList';
 import { safeLocalStorage } from './utils/storage';
 import ApplicationManager from './window/ApplicationManager';
-import TodoList from './TodoList';
 
 const App = (): JSX.Element => {
     const [applicationManager] = useState(() => {
         const manager = new ApplicationManager();
-        manager.addApplication('memo', <>memo</>);
+        manager.addApplication('memo', <Memo />);
         manager.addApplication('todolist', <TodoList />);
         return manager;
     });

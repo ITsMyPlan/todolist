@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
+import { useWindowSize } from '../hooks/useWindowSize';
+import type Application from '../window/Application';
 import AppWindowHeader from './AppWindowHeader';
-import RnD from './components/RnD';
-import { useWindowSize } from './hooks/useWindowSize';
-import type Application from './window/Application';
+import RnD from './RnD';
 
 export const MIN_WIDTH = 500;
 export const MIN_HEIGHT = 400;
