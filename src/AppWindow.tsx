@@ -2,19 +2,18 @@ import { useRef, useState } from 'react';
 import AppWindowHeader from './AppWindowHeader';
 import RnD from './components/RnD';
 import { useWindowSize } from './hooks/useWindowSize';
+import type Application from './window/Application';
 
 export const MIN_WIDTH = 500;
 export const MIN_HEIGHT = 400;
 
 interface AppWindowProps {
-    title: string;
-    zIndex: number;
+    app: Application;
     onZIndex: () => void;
-    children: React.ReactNode;
 }
 
 const AppWindow = (props: AppWindowProps): JSX.Element | null => {
-    const { title, zIndex, onZIndex, children } = props;
+    const { app, onZIndex } = props;
     const appWindowRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth, height: windowHeight } = useWindowSize();
     const [{ x, y, w, h }, setAppRect] = useState({ x: 100, y: 100, w: MIN_WIDTH, h: MIN_HEIGHT });
@@ -60,7 +59,7 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                         x: isMaximized ? 0 : x,
                         y: isMaximized ? 0 : y,
                     }}
-                    zIndex={zIndex}
+                    zIndex={app.zIndex}
                     minWidth={MIN_WIDTH}
                     minHeight={MIN_HEIGHT}
                     windowWidth={windowWidth}
@@ -70,7 +69,7 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                     onZIndex={onZIndex}
                 >
                     <AppWindowHeader
-                        title={title}
+                        appName={app.appName}
                         isMaximized={isMaximized}
                         appRect={{ x, y, w, h }}
                         onSetAppRect={setAppRect}
@@ -78,7 +77,7 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                         onMinimize={handleMinimize}
                         onMaximize={handleMaximize}
                     />
-                    <div className="main-content flex-grow bg-white p-4">{children}</div>
+                    <div className="main-content flex-grow bg-white p-4">{app.content}</div>
                 </RnD>
             )}
         </>

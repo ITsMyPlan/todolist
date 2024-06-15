@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import AppWindow from './AppWindow';
 import { safeLocalStorage } from './utils/storage';
 import ApplicationManager from './window/ApplicationManager';
+import TodoList from './TodoList';
 
 const App = (): JSX.Element => {
     const [applicationManager] = useState(() => {
         const manager = new ApplicationManager();
-        manager.addApplication('todolist', <>todolist</>);
         manager.addApplication('memo', <>memo</>);
+        manager.addApplication('todolist', <TodoList />);
         return manager;
     });
     const [applications, setApplications] = useState(applicationManager.getApplications());
@@ -50,9 +51,7 @@ const App = (): JSX.Element => {
         <div className="bg-light dark:bg-dark bg-cover h-screen w-screen">
             <button onClick={darkSetButton}>{dark ? 'Dark Mode' : 'Light Mode'}</button>
             {applications.map((app) => (
-                <AppWindow key={app.id} title={app.appName} zIndex={app.zIndex} onZIndex={() => handleZIndex(app.id)}>
-                    <p>{app.appName}</p>
-                </AppWindow>
+                <AppWindow key={app.id} app={app} onZIndex={() => handleZIndex(app.id)} />
             ))}
         </div>
     );
