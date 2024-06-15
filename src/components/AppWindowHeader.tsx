@@ -1,4 +1,4 @@
-import { registerDragEvent } from './utils/registerDragEvent';
+import { registerDragEvent } from '../utils/registerDragEvent';
 
 const CloseIcon = (): JSX.Element => (
     <svg
@@ -40,7 +40,7 @@ const MaximizeIcon = (): JSX.Element => (
 );
 
 interface AppWindowHeaderProps {
-    title: string;
+    appName: string;
     isMaximized: boolean;
     appRect: { x: number; y: number; w: number; h: number };
     onSetAppRect: (DOMRect: { x: number; y: number; w: number; h: number }) => void;
@@ -50,7 +50,7 @@ interface AppWindowHeaderProps {
 }
 
 const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
-    const { title, isMaximized, appRect, onSetAppRect, onClose, onMinimize, onMaximize } = props;
+    const { appName, isMaximized, appRect, onSetAppRect, onClose, onMinimize, onMaximize } = props;
 
     return (
         <div
@@ -87,7 +87,7 @@ const AppWindowHeader = (props: AppWindowHeaderProps): JSX.Element => {
                 </button>
             </div>
             <div className="text-center flex-1">
-                <span className="text-sm text-gray-700">{title}</span>
+                <span className="text-sm text-gray-700">{appName}</span>
             </div>
             <div className="w-12"></div>
         </div>
