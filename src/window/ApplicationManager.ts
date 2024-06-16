@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { AppRect } from './Application';
 import Application from './Application';
 
 class ApplicationManager {
@@ -10,8 +11,14 @@ class ApplicationManager {
         this.nextZIndex = 1;
     }
 
-    addApplication(appName: string, content?: ReactNode): Application {
-        const newApplication = new Application(this.applications.length + 1, appName, this.nextZIndex, content);
+    addApplication(appName: string, content?: ReactNode, appRect?: AppRect): Application {
+        const newApplication = new Application(
+            this.applications.length + 1,
+            appName,
+            this.nextZIndex,
+            content,
+            appRect,
+        );
         this.nextZIndex += 1;
         this.applications.push(newApplication);
         return newApplication;

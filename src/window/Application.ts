@@ -1,16 +1,31 @@
 import type { ReactNode } from 'react';
 
+export interface AppRect {
+    width?: number;
+    height?: number;
+    left?: number;
+    top?: number;
+}
+
 class Application {
     id: number;
     appName: string;
     zIndex: number;
-    content?: ReactNode;
+    width?: number;
+    height?: number;
+    left?: number;
+    top?: number;
+    content: ReactNode | null;
 
-    constructor(id: number, appName: string, zIndex: number, content?: ReactNode) {
+    constructor(id: number, appName: string, zIndex: number, content: ReactNode | null, appRect?: AppRect) {
         this.id = id;
         this.appName = appName;
         this.zIndex = zIndex;
         this.content = content;
+        this.width = appRect?.width;
+        this.height = appRect?.height;
+        this.left = appRect?.left;
+        this.top = appRect?.top;
     }
 
     setZIndex(newZIndex: number): void {
