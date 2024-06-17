@@ -1,7 +1,7 @@
 import type { Ref } from 'react';
 import { forwardRef } from 'react';
-import { inrange } from '../utils';
-import { registerDragEvent } from '../utils/registerDragEvent';
+import { inrange } from '../../utils';
+import { registerDragEvent } from '../../utils/registerDragEvent';
 
 interface RnDProps {
     size: { width: number; height: number };
