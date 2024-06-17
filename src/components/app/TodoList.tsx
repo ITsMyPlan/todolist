@@ -1,16 +1,16 @@
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
-import type { Task } from '../service/TodolistService';
-import TodolistService, { TASK_STATUS } from '../service/TodolistService';
+import type { Task } from '../../service/TodolistService';
+import TodolistService, { TASK_STATUS } from '../../service/TodolistService';
 
 const TodoList = (): JSX.Element => {
-    const [tasks, setTasks] = useState<Task[]>([]); // Initialize as an empty array
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [taskTitle, setTaskTitle] = useState<string>('');
     const [taskDescription, setTaskDescription] = useState<string>('');
 
     useEffect(() => {
         const fetchTasks = async (): Promise<void> => {
-            const fetchedTasks = await TodolistService.getTasks();
+            const fetchedTasks = await TodolistService.getAllTasks();
             setTasks(fetchedTasks);
         };
 
@@ -33,21 +33,32 @@ const TodoList = (): JSX.Element => {
         }
     };
 
-    const updateTask = (id: number, newTitle?: string, newDescription?: string): void => {
-        const updatedTasks = tasks.map((task) =>
-            task.id === id ? { ...task, title: newTitle, description: newDescription } : task,
-        );
-        setTasks(updatedTasks);
+    const handleUpdateTask = async (id: number, newTitle?: string, newDescription?: string): Promise<void> => {
+        const taskToUpdate = tasks.find((task) => task.id === id);
+        if (!taskToUpdate) {
+            return;
+        }
+        const updatedTask = await TodolistService.updateTask(id, {
+            title: newTitle ?? taskToUpdate.title,
+            description: newDescription ?? taskToUpdate.description,
+        });
+        if (updatedTask) {
+            setTasks((prevTasks) => prevTasks.map((task) => (task.id === id ? updatedTask : task)));
+        }
     };
 
-    const deleteTask = (id: number): void => {
-        const updatedTasks = tasks.filter((task) => task.id !== id);
-        setTasks(updatedTasks);
+    const handleDeleteTask = async (id: number): Promise<void> => {
+        const isDeleted = await TodolistService.deleteTask(id);
+        if (isDeleted) {
+            setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+        }
     };
 
-    const moveTask = (id: number, newStatus: TASK_STATUS): void => {
-        const updatedTasks = tasks.map((task) => (task.id === id ? { ...task, status: newStatus } : task));
-        setTasks(updatedTasks);
+    const handleMoveTask = async (id: number, newStatus: TASK_STATUS): Promise<void> => {
+        const updatedTask = await TodolistService.updateTask(id, { status: newStatus });
+        if (updatedTask) {
+            setTasks((prevTasks) => prevTasks.map((task) => (task.id === id ? updatedTask : task)));
+        }
     };
 
     const handleInputChange =
@@ -65,7 +76,9 @@ const TodoList = (): JSX.Element => {
                 <div className="mt-4 flex gap-4">
                     {Object.values(TASK_STATUS).map((status) => (
                         <div key={status} className="todo flex-1 select-none">
-                            <div className="text-xl font-semibold mb-2">{status.replace('_', ' ')}</div>
+                            <div className="text-l font-semibold mb-2">
+                                {status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
+                            </div>
                             <div className="grid gap-4">
                                 {tasks
                                     .filter((task) => task.status === status)
@@ -74,18 +87,22 @@ const TodoList = (): JSX.Element => {
                                             <input
                                                 type="text"
                                                 value={task.title}
-                                                onChange={(e) => updateTask(task.id!, e.target.value, task.description)}
+                                                onChange={(e) =>
+                                                    handleUpdateTask(task.id!, e.target.value, task.description)
+                                                }
                                                 className="w-full mb-2"
                                             />
                                             <textarea
                                                 value={task.description}
-                                                onChange={(e) => updateTask(task.id!, task.title, e.target.value)}
+                                                onChange={(e) => handleUpdateTask(task.id!, task.title, e.target.value)}
                                                 className="w-full mb-2"
                                             />
                                             <div className="flex justify-between items-center">
                                                 <select
                                                     value={task.status}
-                                                    onChange={(e) => moveTask(task.id!, e.target.value as TASK_STATUS)}
+                                                    onChange={(e) =>
+                                                        handleMoveTask(task.id!, e.target.value as TASK_STATUS)
+                                                    }
                                                     className="p-1 rounded"
                                                 >
                                                     <option value={TASK_STATUS.TODO}>To Do</option>
@@ -93,7 +110,7 @@ const TodoList = (): JSX.Element => {
                                                     <option value={TASK_STATUS.DONE}>Done</option>
                                                 </select>
                                                 <button
-                                                    onClick={() => deleteTask(task.id!)}
+                                                    onClick={() => handleDeleteTask(task.id!)}
                                                     className="text-red-500 hover:text-red-700"
                                                 >
                                                     Delete

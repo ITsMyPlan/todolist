@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { useWindowSize } from '../hooks/useWindowSize';
-import type Application from '../window/Application';
+import { useWindowSize } from '../../hooks/useWindowSize';
+import type Application from '../../utils/window/Application';
 import AppWindowHeader from './AppWindowHeader';
 import RnD from './RnD';
 

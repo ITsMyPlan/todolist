@@ -1,4 +1,4 @@
-import { registerDragEvent } from '../utils/registerDragEvent';
+import { registerDragEvent } from '../../utils/registerDragEvent';
 
 const CloseIcon = (): JSX.Element => (
     <svg
