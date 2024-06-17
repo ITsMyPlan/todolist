@@ -71,75 +71,96 @@ const TodoList = (): JSX.Element => {
         <>
             <div className="p-3 text-gray-500">To Do list</div>
             <div className="p-4 pt-2">
-                <div className="text-2xl font-bold">To Do List</div>
+                <div className="text-2xl font-bold mb-4">To Do List</div>
 
-                <div className="mt-4 flex gap-4">
-                    {Object.values(TASK_STATUS).map((status) => (
-                        <div key={status} className="todo flex-1 select-none">
-                            <div className="text-l font-semibold mb-2">
-                                {status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
-                            </div>
-                            <div className="grid gap-4">
-                                {tasks
-                                    .filter((task) => task.status === status)
-                                    .map((task) => (
-                                        <div key={task.id} className="bg-white p-4 rounded-lg shadow">
-                                            <input
-                                                type="text"
-                                                value={task.title}
-                                                onChange={(e) =>
-                                                    handleUpdateTask(task.id!, e.target.value, task.description)
-                                                }
-                                                className="w-full mb-2"
-                                            />
-                                            <textarea
-                                                value={task.description}
-                                                onChange={(e) => handleUpdateTask(task.id!, task.title, e.target.value)}
-                                                className="w-full mb-2"
-                                            />
-                                            <div className="flex justify-between items-center">
-                                                <select
-                                                    value={task.status}
-                                                    onChange={(e) =>
-                                                        handleMoveTask(task.id!, e.target.value as TASK_STATUS)
-                                                    }
-                                                    className="p-1 rounded"
-                                                >
-                                                    <option value={TASK_STATUS.TODO}>To Do</option>
-                                                    <option value={TASK_STATUS.INPROGRESS}>In Progress</option>
-                                                    <option value={TASK_STATUS.DONE}>Done</option>
-                                                </select>
-                                                <button
-                                                    onClick={() => handleDeleteTask(task.id!)}
-                                                    className="text-red-500 hover:text-red-700"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </div>
+                <div className="flex gap-4">
+                    {Object.values(TASK_STATUS).map((status) => {
+                        const tasksByStatus = tasks.filter((task) => task.status === status);
+
+                        return (
+                            <div key={status} className="todo flex-1 select-none">
+                                <div className="flex-1">
+                                    <div className="flex items-center justify-between text-lg font-semibold mb-2 border-b pb-2">
+                                        <div>
+                                            {status === TASK_STATUS.TODO && 'To Do'}
+                                            {status === TASK_STATUS.INPROGRESS && 'In Progress'}
+                                            {status === TASK_STATUS.DONE && 'Done'}
                                         </div>
-                                    ))}
+                                        <div className="text-sm text-gray-500">{tasksByStatus.length}</div>
+                                    </div>
+                                </div>
+                                <div className="grid gap-4">
+                                    {tasks
+                                        .filter((task) => task.status === status)
+                                        .map((task) => (
+                                            <>
+                                                <div
+                                                    key={task.id}
+                                                    className="rounded-lg bg-white p-4 shadow border border-gray-200"
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        value={task.title}
+                                                        disabled={task.status === TASK_STATUS.DONE}
+                                                        onChange={(e) =>
+                                                            handleUpdateTask(task.id!, e.target.value, task.description)
+                                                        }
+                                                        className="w-full mb-2 font-semibold text-black"
+                                                    />
+                                                    <textarea
+                                                        value={task.description}
+                                                        disabled={task.status === TASK_STATUS.DONE}
+                                                        onChange={(e) =>
+                                                            handleUpdateTask(task.id!, task.title, e.target.value)
+                                                        }
+                                                        className="w-full text-sm text-gray-500"
+                                                    />
+                                                    <div className="flex items-center justify-between">
+                                                        <select
+                                                            value={task.status}
+                                                            onChange={(e) =>
+                                                                handleMoveTask(task.id!, e.target.value as TASK_STATUS)
+                                                            }
+                                                            className="text-sm p-1 rounded"
+                                                        >
+                                                            <option value={TASK_STATUS.TODO}>To Do</option>
+                                                            <option value={TASK_STATUS.INPROGRESS}>In Progress</option>
+                                                            <option value={TASK_STATUS.DONE}>Done</option>
+                                                        </select>
+                                                        <button
+                                                            onClick={() => handleDeleteTask(task.id!)}
+                                                            className="text-sm text-red-500 hover:text-red-700"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
-
-                <div className="mt-4">
+                <div className="mt-4 rounded-lg bg-white p-4 shadow-xl">
                     <input
                         type="text"
                         value={taskTitle}
                         onChange={handleInputChange(setTaskTitle)}
                         placeholder="New task title"
-                        className="border p-2 rounded w-full"
+                        className="w-full mb-2 font-semibold text-black"
                     />
                     <textarea
                         value={taskDescription}
                         onChange={handleInputChange(setTaskDescription)}
                         placeholder="New task description"
-                        className="border p-2 rounded w-full mt-2"
+                        className="w-full mb-2 text-sm text-gray-500"
                     />
-                    <button onClick={handleCreateTask} className="mt-2 bg-blue-500 text-white p-2 rounded">
-                        Add Task
-                    </button>
+                    <div className="flex items-center justify-between">
+                        <button onClick={handleCreateTask} className="text-sm text-blue-500 hover:text-blue-700">
+                            Add Task
+                        </button>
+                    </div>
                 </div>
             </div>
         </>

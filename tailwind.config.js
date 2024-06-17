@@ -10,8 +10,8 @@ export default {
         },
         extend: {
             backgroundImage: {
-                light: `url(../public/desktop/desktopLight.png)`,
-                dark: 'url(../public/desktop/desktopDark.png)',
+                light: `url(/desktop/desktopLight.png)`,
+                dark: 'url(/desktop/desktopDark.png)',
             },
         },
     },
