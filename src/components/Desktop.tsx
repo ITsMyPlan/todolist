@@ -9,7 +9,14 @@ const Desktop = (): JSX.Element => {
     const [applicationManager] = useState(() => {
         const manager = new ApplicationManager();
         manager.addApplication('blog', <Blog />, { width: 500, height: 650, left: 70, top: 70 });
-        manager.addApplication('todolist', <TodoList />, { width: 800, height: 650, left: 350, top: 100 });
+        manager.addApplication('todolist', <TodoList />, {
+            width: 800,
+            height: 650,
+            left: 350,
+            top: 100,
+            minWidth: 640,
+            minHeight: 640,
+        });
         return manager;
     });
     const [applications, setApplications] = useState(applicationManager.getApplications());
