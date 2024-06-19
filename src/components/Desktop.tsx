@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { safeLocalStorage } from '../utils/storage';
 import ApplicationManager from '../utils/window/ApplicationManager';
-import Blog from './app/Blog';
 import TodoList from './app/TodoList';
 import AppWindow from './appWindow/AppWindow';
 
 const Desktop = (): JSX.Element => {
     const [applicationManager] = useState(() => {
         const manager = new ApplicationManager();
-        manager.addApplication('blog', <Blog />, { width: 500, height: 650, left: 70, top: 70 });
         manager.addApplication('todolist', <TodoList />, {
             width: 800,
             height: 650,
