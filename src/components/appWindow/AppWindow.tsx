@@ -65,8 +65,8 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                         y: isMaximized ? 0 : y,
                     }}
                     zIndex={app.zIndex}
-                    minWidth={MIN_WIDTH}
-                    minHeight={MIN_HEIGHT}
+                    minWidth={app.minWidth ?? MIN_WIDTH}
+                    minHeight={app.minHeight ?? MIN_HEIGHT}
                     windowWidth={windowWidth}
                     windowHeight={windowHeight}
                     updateRnDRect={setAppRect}

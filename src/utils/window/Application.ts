@@ -3,6 +3,8 @@ import type { ReactNode } from 'react';
 export interface AppRect {
     width?: number;
     height?: number;
+    minWidth?: number;
+    minHeight?: number;
     left?: number;
     top?: number;
 }
@@ -13,6 +15,8 @@ class Application {
     zIndex: number;
     width?: number;
     height?: number;
+    minWidth?: number;
+    minHeight?: number;
     left?: number;
     top?: number;
     content: ReactNode | null;
@@ -24,6 +28,8 @@ class Application {
         this.content = content;
         this.width = appRect?.width;
         this.height = appRect?.height;
+        this.minWidth = appRect?.minWidth;
+        this.minHeight = appRect?.minHeight;
         this.left = appRect?.left;
         this.top = appRect?.top;
     }
