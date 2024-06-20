@@ -82,7 +82,7 @@ const AppWindow = (props: AppWindowProps): JSX.Element | null => {
                         onMinimize={handleMinimize}
                         onMaximize={handleMaximize}
                     />
-                    <div className="main-content flex-grow bg-white">{app.content}</div>
+                    <div className="main-content flex-grow bg-white h-screen overflow-y-auto">{app.content}</div>
                 </RnD>
             )}
         </>
