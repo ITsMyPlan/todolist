@@ -7,11 +7,16 @@ const TodoList = (): JSX.Element => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [taskTitle, setTaskTitle] = useState<string>('');
     const [taskDescription, setTaskDescription] = useState<string>('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchTasks = async (): Promise<void> => {
-            const fetchedTasks = await TodolistService.getAllTasks();
-            setTasks(fetchedTasks);
+            try {
+                const fetchedTasks = await TodolistService.getAllTasks();
+                setTasks(fetchedTasks);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchTasks();
@@ -90,53 +95,66 @@ const TodoList = (): JSX.Element => {
                                     </div>
                                 </div>
                                 <div className="grid gap-4">
-                                    {tasks
-                                        .filter((task) => task.status === status)
-                                        .map((task) => (
-                                            <>
-                                                <div
-                                                    key={task.id}
-                                                    className="rounded-lg bg-white p-4 shadow border border-gray-200"
-                                                >
-                                                    <input
-                                                        type="text"
-                                                        value={task.title}
-                                                        disabled={task.status === TASK_STATUS.DONE}
-                                                        onChange={(e) =>
-                                                            handleUpdateTask(task.id!, e.target.value, task.description)
-                                                        }
-                                                        className="w-full mb-2 font-semibold text-black"
-                                                    />
-                                                    <textarea
-                                                        value={task.description}
-                                                        disabled={task.status === TASK_STATUS.DONE}
-                                                        onChange={(e) =>
-                                                            handleUpdateTask(task.id!, task.title, e.target.value)
-                                                        }
-                                                        className="w-full text-sm text-gray-500"
-                                                    />
-                                                    <div className="flex items-center justify-between">
-                                                        <select
-                                                            value={task.status}
+                                    {loading ? (
+                                        Array.from({ length: 3 }).map((_, index) => <SkeletonTask key={index} />)
+                                    ) : (
+                                        <>
+                                            {tasks
+                                                .filter((task) => task.status === status)
+                                                .map((task) => (
+                                                    <div
+                                                        key={task.id}
+                                                        className="rounded-lg bg-white p-4 shadow border border-gray-200"
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            value={task.title}
+                                                            disabled={task.status === TASK_STATUS.DONE}
                                                             onChange={(e) =>
-                                                                handleMoveTask(task.id!, e.target.value as TASK_STATUS)
+                                                                handleUpdateTask(
+                                                                    task.id!,
+                                                                    e.target.value,
+                                                                    task.description,
+                                                                )
                                                             }
-                                                            className="text-sm p-1 rounded"
-                                                        >
-                                                            <option value={TASK_STATUS.TODO}>To Do</option>
-                                                            <option value={TASK_STATUS.INPROGRESS}>In Progress</option>
-                                                            <option value={TASK_STATUS.DONE}>Done</option>
-                                                        </select>
-                                                        <button
-                                                            onClick={() => handleDeleteTask(task.id!)}
-                                                            className="text-sm text-red-500 hover:text-red-700"
-                                                        >
-                                                            Delete
-                                                        </button>
+                                                            className="w-full mb-2 font-semibold text-black"
+                                                        />
+                                                        <textarea
+                                                            value={task.description}
+                                                            disabled={task.status === TASK_STATUS.DONE}
+                                                            onChange={(e) =>
+                                                                handleUpdateTask(task.id!, task.title, e.target.value)
+                                                            }
+                                                            className="w-full text-sm text-gray-500"
+                                                        />
+                                                        <div className="flex items-center justify-between">
+                                                            <select
+                                                                value={task.status}
+                                                                onChange={(e) =>
+                                                                    handleMoveTask(
+                                                                        task.id!,
+                                                                        e.target.value as TASK_STATUS,
+                                                                    )
+                                                                }
+                                                                className="text-sm p-1 rounded"
+                                                            >
+                                                                <option value={TASK_STATUS.TODO}>To Do</option>
+                                                                <option value={TASK_STATUS.INPROGRESS}>
+                                                                    In Progress
+                                                                </option>
+                                                                <option value={TASK_STATUS.DONE}>Done</option>
+                                                            </select>
+                                                            <button
+                                                                onClick={() => handleDeleteTask(task.id!)}
+                                                                className="text-sm text-red-500 hover:text-red-700"
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </>
-                                        ))}
+                                                ))}
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         );
@@ -168,3 +186,14 @@ const TodoList = (): JSX.Element => {
 };
 
 export default TodoList;
+
+const SkeletonTask = (): JSX.Element => (
+    <div className="rounded-lg bg-gray-200 p-4 shadow border border-gray-200 animate-pulse">
+        <div className="w-3/4 h-6 mb-2 bg-gray-300 rounded"></div>
+        <div className="w-full h-4 bg-gray-300 rounded"></div>
+        <div className="mt-4 flex items-center justify-between">
+            <div className="w-1/3 h-4 bg-gray-300 rounded"></div>
+            <div className="w-1/4 h-4 bg-gray-300 rounded"></div>
+        </div>
+    </div>
+);
